@@ -1388,11 +1388,11 @@ class LikelihoodMFs(LikelihoodBaseFile):
         obs_hours,
     ):
         if is_smooth:
-            data=t21c.smooth_coeval(brightness_temp,z,box_size_mpc=L)
+            data=t21c.smooth_coeval(brightness_temp,z,box_size_mpc=L,verbose=False)
         else:
             data=brightness_temp
         if is_noise:
-            noise=t21c.smooth_coeval(t21c.noise_cube_coeval(ndim,z,obs_time=obs_hours,uv_map=uvmap,N_ant=nant,boxsize=L),z,box_size_mpc=L)
+            noise=t21c.smooth_coeval(t21c.noise_cube_coeval(ndim,z,obs_time=obs_hours,uv_map=uvmap,N_ant=nant,boxsize=L,verbose=False),z,box_size_mpc=L,verbose=False)
         
         v0,v1,v2,v3=MFs.calculateMFs(data+noise-np.mean(data),min_sig=min_sig,max_sig=max_sig,step=steps)
         return v0,v1,v2,v3
