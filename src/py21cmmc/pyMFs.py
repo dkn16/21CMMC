@@ -1,14 +1,15 @@
+from numba.np.ufunc import parallel
 import numpy as np 
 
 
 from sympy import LeviCivita
 from numba import jit
-
+import numba
 import os
 import tools21cm as t21c
+numba.config.NUMBA_DEFAULT_NUM_THREADS=4
 
-
-@jit
+@jit(parallel=True)
 def calculateMFs(data,thresholds=None,min_sig=-3,max_sig=3,step=0.1,is_periodic=False,deltabin=0.4,is_need_calculate_bin=True):
     data=np.array(data,dtype=np.float64)
     datashape=np.shape(data)
@@ -92,7 +93,7 @@ def calculateMFs(data,thresholds=None,min_sig=-3,max_sig=3,step=0.1,is_periodic=
             i+=1
     return v0,v1,v2,v3
 
-@jit
+@jit(parallel=True)
 def calculateKdr(data,gradnorm,sum1,sum2,threshold,deltabin,HII_x,HII_y,HII_z,volume,dth):
     n=0.0
     v1=0.0
@@ -118,7 +119,7 @@ def calculateKdr(data,gradnorm,sum1,sum2,threshold,deltabin,HII_x,HII_y,HII_z,vo
     return v0,v1,v2,v3
 
 
-
+@jit(parallel=True)
 def hessian(x):
     """
     Calculate the hessian matrix with finite differences
