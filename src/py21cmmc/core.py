@@ -15,7 +15,7 @@ from os import path
 from . import _utils as ut
 
 logger = logging.getLogger("21cmFAST")
-
+logger.setLevel(level = logging.DEBUG)
 
 class NotSetupError(AttributeError):
     """Exception for when a Core has not yet been setup."""
@@ -415,6 +415,7 @@ class CoreCoevalModule(CoreBase):
         astro_params, cosmo_params = self._update_params(ctx.getParams())
         logger.debug(f"AstroParams: {astro_params}")
         logger.debug(f"CosmoParams: {cosmo_params}")
+        logger.debug(f"UserParams: {self.user_params}")
 
         # Call C-code
         coeval = p21.run_coeval(
