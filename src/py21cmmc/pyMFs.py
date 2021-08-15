@@ -3,11 +3,11 @@ import numpy as np
 
 
 from sympy import LeviCivita
-from numba import jit
+from numba import jit,prange
 import numba
 import os
 import tools21cm as t21c
-numba.config.NUMBA_DEFAULT_NUM_THREADS=4
+#numba.config.NUMBA_NUM_THREADS=2
 
 @jit(parallel=True)
 def calculateMFs(data,thresholds=None,min_sig=-3,max_sig=3,step=0.1,is_periodic=False,deltabin=0.4,is_need_calculate_bin=True):
@@ -44,9 +44,9 @@ def calculateMFs(data,thresholds=None,min_sig=-3,max_sig=3,step=0.1,is_periodic=
         grad=np.array(grad).transpose(1,2,3,0)
         secondgrad=np.array(secondgrad).transpose(2,3,4,0,1)
         s=0
-        for i in range(HII_x):
-            for j in range(HII_y):
-                for k in range(HII_z):
+        for i in prange(HII_x):
+            for j in prange(HII_y):
+                for k in prange(HII_z):
                     s+=1
                     sum1temp=0.0
                     sum2temp=0.0
@@ -99,9 +99,9 @@ def calculateKdr(data,gradnorm,sum1,sum2,threshold,deltabin,HII_x,HII_y,HII_z,vo
     v1=0.0
     v2=0.0
     v3=0.0
-    for i in range(HII_x):
-        for j in range(HII_y):
-            for k in range(HII_z):
+    for i in prange(HII_x):
+        for j in prange(HII_y):
+            for k in prange(HII_z):
                 if data[i][j][k]>=threshold:
                     n=n+1.0
                 if (np.abs(data[i][j][k]-threshold)<dth):
