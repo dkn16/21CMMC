@@ -119,7 +119,6 @@ def calculateKdr(data,gradnorm,sum1,sum2,threshold,deltabin,HII_x,HII_y,HII_z,vo
     return v0,v1,v2,v3
 
 
-@jit(parallel=True)
 def hessian(x):
     """
     Calculate the hessian matrix with finite differences
